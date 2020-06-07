@@ -1,3 +1,58 @@
-.login-container .mat-form-field + .mat-form-field {
+@font-face {
+  font-family: "Fira Code";
+  src: url('src/assets/FiraCode-Regular.otf');
+}
+
+.tab-icon {
+  margin-right: 8px;
   margin-left: 8px;
+}
+
+//mat-grid-tile {
+//  background: lightblue;
+//}
+
+.avatar-image {
+  width: 200px;
+  height: 200px;
+  background-image: url('src/assets/Gravatar-400x400.png');
+  background-size: cover;
+  background-position:center;
+  border-radius:50%;
+}
+
+.tab-name {
+  font-size: 20px;
+  font-family: "Fira Code", monospace;
+}
+
+.lambda {
+  width: 200px;
+  height: 200px;
+  background-image: url('src/assets/aws/AWS-Lambda_Lambda-Function_dark-bg@4x.png');
+  background-size: cover;
+  background-position:center;
+  border-radius:50%;
+}
+
+.dynamodbFacebook {
+  width: 200px;
+  height: 200px;
+  background-image: url('src/assets/aws/Amazon-DynamoDB_dark-bg@4x.png');
+  background-size: cover;
+  background-position:center;
+  border-radius:50%;
+}
+
+.dynamodbGoogle {
+  width: 200px;
+  height: 200px;
+  background-image: url('src/assets/aws/Amazon-DynamoDB_dark-bg@4x.png');
+  background-size: cover;
+  background-position:center;
+  border-radius:50%;
+}
+
+body {
+  background-color: #ebe4e4;
 }

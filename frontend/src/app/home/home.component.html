@@ -1,23 +1,99 @@
-<app-header></app-header>
-<form class="login-container" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="fill">
-    <mat-label>Email</mat-label>
-      <input matInput placeholder="example@domain.com" formControlName="email" required>
-    <mat-error *ngIf="rf.email.invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Confirm Password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" required>
-    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Submit</button>
-</form>
+<body>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">person</mat-icon>
+        <span class="tab-name">me()</span>
+      </ng-template>
+      <mat-grid-list cols="4" rowHeight="120px">
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="2">
+          <div mat-card-avatar class="avatar-image"></div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"> </mat-grid-tile>
+      </mat-grid-list>
+      <br>
+      <mat-grid-list cols="4" rowHeight="50px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <mat-icon class="tab-icon">code</mat-icon>Senior Software Engineer
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+          <mat-icon class="tab-icon">cloud_queue</mat-icon>Native Cloud Development
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      </mat-grid-list>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">article</mat-icon>
+        <span class="tab-name">play()</span>
+      </ng-template>
+
+      <mat-grid-list cols="1" rowHeight="50px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1" class="mat-h1">What is an easy way to tell people what I know? Abstract everything into buttons.</mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="4" rowHeight="50px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">Click below to invoke a simple lambda</mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"><mat-icon class="tab-icon">construction</mat-icon>TBD ...</mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">Click below to get DynamoDB data</mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"><mat-icon class="tab-icon">construction</mat-icon>TBD ...</mat-grid-tile>
+      </mat-grid-list>
+
+      <br>
+
+      <!-- if(mobile) ? cols=1 : cols=4 -->
+      <!-- https://stackoverflow.com/questions/54218485/angular-7-responsive-layout-using-material-grid -->
+      <mat-grid-list cols="4" rowHeight="120px">
+        <mat-grid-tile [colspan]="1" [rowspan]="2">
+          <div *ngIf="!isLambdaDoneLoading" (click)="onPlayLambda()" mat-card-avatar class="lambda"></div>
+          <div *ngIf="isLambdaDoneLoading"><mat-spinner></mat-spinner></div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2">
+          <div *ngIf="!isGoogleDoneLoading" (click)="onGetGoogleFrameworks()" mat-card-avatar class="dynamodbGoogle"></div>
+          <div *ngIf="isGoogleDoneLoading"><mat-spinner></mat-spinner></div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"> </mat-grid-tile>
+      </mat-grid-list>
+      <br>
+      <mat-grid-list cols="4" rowHeight="50px">
+        <mat-grid-tile [colspan]="1" [rowspan]="2">
+          {{ isLambdaDoneResponse?.message }}
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2">
+          <div *ngFor="let item of isGoogleDoneResponse?.message">
+            {{ item | json }}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          {{ isLambdaDoneResponse?.path }}
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          {{ isGoogleDoneResponse?.path }}
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+      </mat-grid-list>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">headset</mat-icon>
+        <span class="tab-name">fun()</span>
+      </ng-template>
+      <mat-grid-list cols="4" rowHeight="120px">
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="2"><mat-icon class="tab-icon">construction</mat-icon>Under Construction ...</mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2"></mat-grid-tile>
+      </mat-grid-list>
+      <br>
+    </mat-tab>
+  </mat-tab-group>
+</body>

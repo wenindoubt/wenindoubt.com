@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from 'aws-amplify';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { PlayService } from '../services/play.service';
+import { PlayDynamoDb, PlayLambda } from '../types';
 
 @Component({
   selector: 'app-home',
@@ -8,66 +8,30 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public hide = true;
-  public registerForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required])
-  });
+  public isLambdaDoneLoading = false;
+  public isLambdaDoneResponse: PlayLambda;
 
-  constructor() {}
+  public isGoogleDoneLoading = false;
+  public isGoogleDoneResponse: PlayDynamoDb;
 
-  /* Convenience getter to access form fields */
-  public get rf(): { [key: string]: AbstractControl } {
-    return this.registerForm.controls;
+  public constructor(private readonly playSvc: PlayService) {}
+
+  public ngOnInit() {}
+
+  public onPlayLambda() {
+    this.isLambdaDoneLoading = !this.isLambdaDoneLoading;
+    this.playSvc.playLambda().subscribe((val: PlayLambda) => {
+      this.isLambdaDoneLoading = !this.isLambdaDoneLoading;
+      this.isLambdaDoneResponse = val;
+    });
   }
 
-  public async ngOnInit() {
-    // await this.signUp();
-    // await this.confirmSignUp();
-    await this.signIn();
-  }
-
-  public getErrorMessage(): string {
-    if (this.rf.email.hasError('required')) {
-      return 'You must enter a value';
-    }
-
-    return this.rf.email.hasError('email') ? 'Not a valid email' : '';
-  }
-
-  /* Tested this and registering a user works now */
-  public async signUp(email: string, password: string) {
-    try {
-      const user = await Auth.signUp({
-        username: email,
-        password: password /* Not necessary to change */
-      });
-      console.log({ user });
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  }
-
-  public async confirmSignUp() {
-    try {
-      await Auth.confirmSignUp('jeffrey@wenindoubt.com', '484214');
-    } catch (error) {
-      console.log('error confirming sign up', error);
-    }
-  }
-
-  public async signIn() {
-    try {
-      const user = await Auth.signIn('jeffrey@wenindoubt.com', '12Never34!');
-      console.log(user);
-    } catch (error) {
-      console.log('error signing in', error);
-    }
-  }
-
-  public async onSubmit() {
-    console.log('onSubmit Register Form', this.rf.value);
-    await this.signUp(this.rf.email.value, this.rf.password.value);
+  public onGetGoogleFrameworks() {
+    this.isGoogleDoneLoading = !this.isGoogleDoneLoading;
+    this.playSvc.getGoogleFrameworks().subscribe((val: PlayDynamoDb) => {
+      this.isGoogleDoneLoading = !this.isGoogleDoneLoading;
+      console.log(val);
+      this.isGoogleDoneResponse = val;
+    });
   }
 }
