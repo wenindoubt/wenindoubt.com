@@ -42,14 +42,6 @@ functions:
           path: playLambda
           cors: true
 
-  getFacebookFrameworks:
-    handler: playDynamoDb.getFacebookFrameworks
-    events:
-      - http:
-          method: get
-          path: playFacebook
-          cors: true
-
   getGoogleFrameworks:
     handler: playDynamoDb.getGoogleFrameworks
     events:
